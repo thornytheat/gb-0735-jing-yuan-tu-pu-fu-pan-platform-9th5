@@ -1,0 +1,29 @@
+<section class="panel">
+  <div class="panel__head">
+    <div><h2>整片库存与等级</h2><span class="panel__meta" id="split-inventory-meta">—</span></div>
+    <span class="panel__meta">冲突 / 待测片不计入任何交付单</span>
+  </div>
+  <div class="table-scroll tall" id="split-inventory"></div>
+</section>
+<section class="panel below">
+  <div class="panel__head">
+    <div><h2>两种取舍对比</h2><span class="panel__meta">同一片不会同时出现在两张单</span></div>
+  </div>
+  <div class="panel__body split-cards" id="split-plans"></div>
+</section>
+<section class="panel below">
+  <div class="panel__head">
+    <div><h2>归属明细（逐片落点）</h2><span class="panel__meta" id="split-lines-meta">—</span></div>
+    <label>方案 <select id="split-plan-filter" aria-label="选择取舍方案"></select></label>
+  </div>
+  <div class="table-scroll tall" id="split-lines"></div>
+</section>
+<section class="panel below">
+  <div class="panel__head"><h2>发布拆批归属单</h2><span class="panel__meta" id="split-publish-meta">重跑同方案不新增第二张归属单</span></div>
+  <div class="panel__body split-publish" id="split-publish"></div>
+</section>
+<section class="panel below">
+  <div class="panel__head"><h2>当前生效归属单与版本历史</h2><span class="panel__meta">发布中断自动恢复旧版，原图批可在图批复盘查回</span></div>
+  <div class="panel__body" id="split-current"></div>
+  <div class="table-scroll" id="split-history"></div>
+</section>

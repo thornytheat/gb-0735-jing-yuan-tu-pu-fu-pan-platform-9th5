@@ -1,0 +1,106 @@
+{
+  "sample": "tonight",
+  "label": "今晚拆批图批",
+  "lot": "FT26-1122",
+  "sources": [
+    {
+      "name": "tonight-probe.csv",
+      "records": 175,
+      "notch": "S"
+    }
+  ],
+  "wafers": [
+    {
+      "wafer": "W-21",
+      "radius": 4,
+      "edge": 1,
+      "notch_depth": 0,
+      "notch_half_width": 0
+    },
+    {
+      "wafer": "W-22",
+      "radius": 4,
+      "edge": 1,
+      "notch_depth": 0,
+      "notch_half_width": 0
+    },
+    {
+      "wafer": "W-23",
+      "radius": 4,
+      "edge": 1,
+      "notch_depth": 0,
+      "notch_half_width": 0
+    },
+    {
+      "wafer": "W-24",
+      "radius": 4,
+      "edge": 1,
+      "notch_depth": 0,
+      "notch_half_width": 0
+    },
+    {
+      "wafer": "W-25",
+      "radius": 4,
+      "edge": 1,
+      "notch_depth": 0,
+      "notch_half_width": 0
+    },
+    {
+      "wafer": "W-26",
+      "radius": 4,
+      "edge": 1,
+      "notch_depth": 0,
+      "notch_half_width": 0
+    }
+  ],
+  "ledger": [
+    {
+      "wafer": "W-21",
+      "valid": 29,
+      "passed": 29,
+      "failed": 0,
+      "pending": 0,
+      "conflict": 0
+    },
+    {
+      "wafer": "W-22",
+      "valid": 29,
+      "passed": 29,
+      "failed": 0,
+      "pending": 0,
+      "conflict": 0
+    },
+    {
+      "wafer": "W-23",
+      "valid": 29,
+      "passed": 26,
+      "failed": 3,
+      "pending": 0,
+      "conflict": 0
+    },
+    {
+      "wafer": "W-24",
+      "valid": 29,
+      "passed": 26,
+      "failed": 3,
+      "pending": 0,
+      "conflict": 0
+    },
+    {
+      "wafer": "W-25",
+      "valid": 29,
+      "passed": 25,
+      "failed": 3,
+      "pending": 0,
+      "conflict": 1
+    },
+    {
+      "wafer": "W-26",
+      "valid": 29,
+      "passed": 25,
+      "failed": 3,
+      "pending": 1,
+      "conflict": 0
+    }
+  ]
+}

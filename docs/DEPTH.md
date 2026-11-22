@@ -14,6 +14,7 @@
 | M5 缺陷簇 | 检查四邻域成员、分档和原行 | `GET /api/runs/{run_id}/clusters/{wafer}` | `app/modules/clusters/components.py` | `tests/test_clusters.py` |
 | M6 良率勾稽 | 核对坐标集合、实收和交接差值 | `GET /api/runs/{run_id}/yield` | `app/modules/yield_audit/compare.py` | `tests/test_yield.py` |
 | M7 图批复盘 | 原子运行、按归档重算、核验后导出 | `POST /api/runs` `POST /api/runs/{run_id}/rerun` `GET /api/runs/{run_id}/export` | `app/modules/runs/pipeline.py` `app/modules/runs/service.py` `app/modules/runs/bundle.py` `app/store.py` | `tests/test_runs.py` |
+| M8 拆批归属 | 对比先保 A / 先保 B 的逐片落点，发布版本化归属单并支持中断回滚 | `GET /api/runs/{run_id}/splits/comparison` `POST /api/runs/{run_id}/splits/publish` `GET /api/runs/{run_id}/splits/current` | `app/modules/splits/planner.py` `app/modules/splits/store.py` `app/modules/splits/service.py` | `tests/test_splits.py` `tests/test_splits_api.py` |
 
 ## 陷阱登记
 
@@ -31,6 +32,8 @@
 | TRAP-17 | `probe-b.csv` 中文栏名且第二段换序 | 错对 X/Y 或分档 | 映射别名并按段绑定字段 | `app/modules/intake/reader.py` | `tests/test_intake.py::test_segment_headers_advance_reordered_contract` |
 | TRAP-18 | 空文件、空行与仅档头的构造输入 | 产生零行成功批次 | 三态分别返回错误码 | `app/modules/intake/reader.py` | `tests/test_intake.py::test_empty_header_and_blank_are_separate` |
 | TRAP-19 | `(0,1)` 多测次，2 号在 10 号之后到达 | 误选最后行或字典序最大值 | 取最大有效测次号 | `app/modules/retest/arbitrate.py` | `tests/test_retest.py::test_numeric_attempt_precedence_ignores_arrival_order` |
+| TRAP-20 | 全通过片不足 3 片、可返工片恰好补 B | 同片同时塞进 A、B 两张单 | 引擎逐片唯一落点并做互斥校验，冲突/待测片一律冻结 | `app/modules/splits/planner.py` | `tests/test_splits.py::test_same_wafer_never_assigned_to_both_orders` `tests/test_splits.py::test_conflict_and_pending_never_enter_any_order` |
+| TRAP-21 | 重跑同一图批、发布中途出错 | 新增第二张归属单或留下半截当前版 | 按内容摘要幂等复用；单事务写入、最后才切 current，失败整体回滚旧版 | `app/modules/splits/store.py` | `tests/test_splits_api.py::test_republish_same_plan_is_idempotent_no_second_order` `tests/test_splits_api.py::test_interrupted_publish_rolls_back_and_restores_previous` |
 
 补充反例包括经过 X 反射后重新推导缺口转角、圆形边缘等式包含、对角缺陷分簇、恢复点断开原失效带、平移阵列漏位以及同键并发只提交一次。
 
@@ -39,3 +42,5 @@
 - 有效位集合与裁决键集合相等，有效数守恒到四类最终状态。
 - 实收行按五类互斥归档，声明的逻辑数据量可独立回推。
 - 对外提供一份证据包，同一规则版本下输入相同时运行号与结果摘要一致。
+- 每片整片在任一方案下只有一个落点（A 单 / B 单 / 留厂 / 暂不入单），A、B 两单的晶圆集合互不相交，冲突与待测片不进任何单。
+- 归属单版本只增不改：同内容重跑复用原版本，换方案开新版本；当前指针在提交末尾切换，发布中断后旧版仍为当前且原图批归档不受影响。

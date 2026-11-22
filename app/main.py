@@ -15,6 +15,9 @@ from app.modules.mask import handler as mask
 from app.modules.retest import handler as retest
 from app.modules.runs import handler as runs
 from app.modules.runs.service import RunService
+from app.modules.splits import handler as splits
+from app.modules.splits.service import SplitService
+from app.modules.splits.store import SplitStore
 from app.modules.yield_audit import handler as yield_audit
 from app.store import RunStore
 from app.web import router as web
@@ -24,14 +27,16 @@ def create_app(db=None, seed=True):
     @asynccontextmanager
     async def lifespan(instance):
         await run_in_threadpool(instance.state.runs.store.initialize)
+        await run_in_threadpool(instance.state.splits.store.initialize)
         if seed and not await run_in_threadpool(instance.state.runs.store.list):
             await run_in_threadpool(instance.state.runs.start, DEFAULT_SAMPLE)
         yield
 
     instance = FastAPI(title="晶圆图谱复判台", lifespan=lifespan)
     instance.state.runs = RunService(RunStore(db or database_path()))
+    instance.state.splits = SplitService(instance.state.runs, SplitStore(db or database_path()))
     instance.mount("/static", StaticFiles(directory=ROOT / "app/static"), name="static")
-    for module in (intake, coordinates, mask, retest, clusters, yield_audit, runs):
+    for module in (intake, coordinates, mask, retest, clusters, yield_audit, runs, splits):
         instance.include_router(module.router)
     instance.include_router(web)
     instance.add_exception_handler(ReviewError, review_error)

@@ -13,9 +13,10 @@ PAGES = {
     "retest": ("复测裁决", "/retest", "≋"),
     "clusters": ("缺陷簇", "/clusters", "▧"),
     "yield": ("良率勾稽", "/yield", "≡"),
+    "splits": ("拆批归属", "/splits", "⛁"),
     "runs": ("图批复盘", "/runs", "▣"),
 }
-NAV = ("intake", "coordinates", "mask", "retest", "clusters", "yield", "runs")
+NAV = ("intake", "coordinates", "mask", "retest", "clusters", "yield", "splits", "runs")
 
 
 @router.get("/healthz", include_in_schema=False)
@@ -29,6 +30,7 @@ def health():
 @router.get("/retest", response_class=HTMLResponse, include_in_schema=False)
 @router.get("/clusters", response_class=HTMLResponse, include_in_schema=False)
 @router.get("/yield", response_class=HTMLResponse, include_in_schema=False)
+@router.get("/splits", response_class=HTMLResponse, include_in_schema=False)
 @router.get("/runs", response_class=HTMLResponse, include_in_schema=False)
 def workspace(request: Request):
     stage = request.url.path.strip("/") or "mask"

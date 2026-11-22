@@ -10,6 +10,7 @@ from app.modules.intake.contract import InputPackage, Sample
 CATALOG = {
     "mixed": "复判混合样例",
     "baseline": "单档基准样例",
+    "tonight": "今晚拆批图批",
     "truncated": "截断探针图",
 }
 

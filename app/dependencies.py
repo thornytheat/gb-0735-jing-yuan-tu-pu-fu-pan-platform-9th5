@@ -9,11 +9,16 @@ def run_service(request: Request):
     return request.app.state.runs
 
 
+def split_service(request: Request):
+    return request.app.state.splits
+
+
 def run_archive(run_id: str, request: Request):
     return request.app.state.runs.store.get(run_id)
 
 
 Service = Annotated[object, Depends(run_service)]
+SplitSvc = Annotated[object, Depends(split_service)]
 Archive = Annotated[tuple, Depends(run_archive)]
 
 
